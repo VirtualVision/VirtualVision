@@ -27,3 +27,5 @@
 *.xml binary
 
 *.exp binary
+
+*.jar binary
