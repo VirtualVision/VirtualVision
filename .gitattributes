@@ -1,0 +1,29 @@
+* text = auto
+
+*.c text
+
+*.cpp text
+
+*.h text
+
+*.hpp text
+
+*.html text
+
+*.sln text eol-crlf
+
+*.png binary
+
+*.jpg binary
+
+*.dll binary
+
+*.lib binary
+
+*.pbd binary
+
+*.exe binary
+
+*.xml binary
+
+*.exp binary
