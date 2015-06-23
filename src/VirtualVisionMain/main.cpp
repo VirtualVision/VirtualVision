@@ -1,6 +1,6 @@
 //example includes, remove in future
-#include "opencv2/imgproc/imgproc.hpp"
-#include "opencv2/highgui/highgui.hpp"
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
 //#include <stdlib.h>
 //#include <stdio.h>
 #include <zmq.hpp>  //needed to define all sockets

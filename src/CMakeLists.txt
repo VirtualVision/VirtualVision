@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 2.8)
 
 project (VirtualVision)
 
@@ -27,11 +27,11 @@ IF(WIN32)
 
 ELSE(WIN32)
   message("VirtualVision does not detect Windows platform...")
-
+ 
   #Set Linux Root 
-  #Set OpenCV Environment Vars
-  #Set ZeroMQ Environment vars
-
+  set(VIRTUAL_VISION_ROOT "/usr/VirtualVision")
+  set(VIRTUAL_VISION_SRC "${VIRTUAL_VISION_ROOT}/src")
+ 
 ENDIF(WIN32)
 
 add_subdirectory (
