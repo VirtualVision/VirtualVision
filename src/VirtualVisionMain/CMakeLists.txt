@@ -1,19 +1,18 @@
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 2.8)
 
 project (VirtualVisionMain)
 
 set(VIRTUAL_VISION_MAIN "${CMAKE_CURRENT_SOURCE_DIR}")
 
-include_directories(${OPENCV_BUILD_DIR})
-include_directories(${OPENCV_INCLUDE_DIRS})
-include_directories("${ZEROMQ_BINARY_DIR}")
-include_directories("${ZEROMQ_BUILD_DIR}")
-include_directories("${ZEROMQ_INCLUDE_DIR}")
-
 IF(WIN32)
   message("VirtualVisionMain detects Windows platform...")
+  include_directories(${OPENCV_BUILD_DIR})
+  include_directories(${OPENCV_INCLUDE_DIRS})
+  include_directories("${ZEROMQ_BINARY_DIR}")
+  include_directories("${ZEROMQ_BUILD_DIR}")
+  include_directories("${ZEROMQ_INCLUDE_DIR}")
 
-    # find all of the libs in OPENCV_LIB_DIRS
+        # find all of the libs in OPENCV_LIB_DIRS
 	file(GLOB OpenCV_LIBS 
 		RELATIVE ${OPENCV_LIB_DIRS} ${OPENCV_LIB_DIRS}/*.lib)		
 	file(GLOB OpenCV_STATICLIBS 	
@@ -38,6 +37,15 @@ IF(WIN32)
 ELSE(WIN32)
 	message("VirtualVisionMain does not detect Windows platform...")
 
-	#do same as windows but for raspian/linux
+  find_package(OpenCV REQUIRED)
+  find_package(PkgConfig)
+  pkg_check_modules(ZeroMQ libzmq)
+  find_library(ZMQ_LIB zmq)
+
+  add_executable(VirtualVisionMain main.cpp) 
+
+  target_link_libraries(VirtualVisionMain 
+	${OpenCV_LIBS}
+	${ZMQ_LIB})
 
 ENDIF(WIN32)

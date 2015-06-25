@@ -27,4 +27,29 @@ Instructions:
 		done and ready to run!
 
 	Remote:
-		Comming Soon!
+		apt-get install camke
+		- apt-get install git
+		- apt-get install libopencv-dev
+		- apt-get install python-opencv
+		- apt-get install libtool
+		- apt-get install autoconf
+		- wget http://download.zeromq.org/zeromq-4.0.4.ta.gz
+		- tar zxvf zeromq-4.0.4.tar.gz
+		- cd zeromq-4.0.4
+		- ./configure
+		- make
+		- sudo make install
+		- sudo ldconfig
+		- wget http://github.com/zeromq/cppzmq.git
+		- cp zmq.hpp to include dir that contains zmq.h
+		- cd to /usr
+		- pull repository to /usr
+		- mkdir build, for out-of-source build
+		- cd build
+		- cmake ../VirtualVision/src
+		- make
+		- cd VirtualVision
+		- ./VirtualVision
+
+
+
