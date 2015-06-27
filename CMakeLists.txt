@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 2.8)
 
 project (VirtualVision)
 
@@ -65,7 +65,11 @@ target_link_libraries (VirtualVision
 	"${ZEROMQ_LIBS}"
 	CamControl)
 
-ELSEIF(WIN32)
+ELSE(WIN32)
+
+include_directories("${PROJECT_BINARY_DIR}")
+include_directories ("${PROJECT_SOURCE_DIR}/CamControl")
+
 find_package(OpenCV REQUIRED)
 find_package(PkgConfig)
 pkg_check_modules(ZeroMQ libzmq)
@@ -78,6 +82,7 @@ add_executable(VirtualVision VirtualVision.cpp)
 target_link_libraries(VirtualVision
 	${OpenCV_LIBS}
 	${ZMQ_LIB}
+	pthread
 	CamControl)
 
 ENDIF(WIN32)

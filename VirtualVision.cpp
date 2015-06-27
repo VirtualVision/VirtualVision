@@ -19,7 +19,7 @@
 #include <zmq.hpp> 
 #include <iostream>
 #include <pthread.h>
-#include <chrono>
+//#include <chrono>
 #endif
 
 
@@ -49,7 +49,7 @@ void camControl2()
 	}
 }
 #else
-void camControl1()
+void *camControl1(void *threadId)
 {
 	int count = 0;
 	CamControl *camControl = new CamControl();
@@ -57,10 +57,10 @@ void camControl1()
 	{
 		camControl->hello();
 		count++;
-		std::this_thread::sleep_for(std::chrono::seconds(2));
+		 //std::this_thread::sleep_for(std::chrono::seconds(2));
 	}
 }
-void camControl2()
+void *camControl2(void *threadId)
 {
 	int count = 0;
 	CamControl *camControl = new CamControl();
@@ -68,7 +68,7 @@ void camControl2()
 	{
 		camControl->world();
 		count++;
-		std::this_thread::sleep_for(std::chrono::seconds(1));
+		//std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 }
 #endif
@@ -99,33 +99,26 @@ int main(int argc, char** argv)
 	pthread_t threads[2];
 
 	int rc;
-	int i;
-	for (i = 0; i < NUM_THREADS; i++){
-		cout << "main() : creating thread, " << i << endl;
-		rc = pthread_create(&threads[i], NULL,
-			PrintHello, (void *)i);
-		if (rc){
-			cout << "Error:unable to create thread," << rc << endl;
-			exit(-1);
-		}
-	}
-	cout << "main() : creating thread, " << i << endl;
+	int i = 0;
+	
+	std::cout << "main() : creating thread, " << i << std::endl;
 	rc = pthread_create(&threads[i], NULL,
-		camControl1, (void)i);
+		camControl1, (void *)i);
 	if (rc)
 	{
-		cout << "Error:unable to create thread," << rc << endl;
+		std::cout << "Error:unable to create thread," << rc << std::endl;
 		exit(-1);
 	}
-
-	cout << "main() : creating thread, " << i << endl;
+	i++;
+	std::cout << "main() : creating thread, " << i << std::endl;
 	rc = pthread_create(&threads[i], NULL,
-		camControl2, (void)i);
+		camControl2, (void *)i);
 	if (rc)
 	{
-		cout << "Error:unable to create thread," << rc << endl;
+		std::cout << "Error:unable to create thread," << rc << std::endl;
 		exit(-1);
 	}
+	i++;
 
 #endif
 	return 0;
