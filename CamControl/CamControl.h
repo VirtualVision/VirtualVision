@@ -10,6 +10,7 @@ public:
 	CamControl();
 	~CamControl(){};
 	void hello();
+	void world();
 	bool isCmaeraOn();
 	void turnCameraOff();
 	void turnCameraOn();

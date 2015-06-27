@@ -71,13 +71,18 @@ find_package(PkgConfig)
 pkg_check_modules(ZeroMQ libzmq)
 find_library(ZMQ_LIB zmq)
 
+add_subdirectory (CamControl)
+
 add_executable(VirtualVision VirtualVision.cpp)
 
 target_link_libraries(VirtualVision
 	${OpenCV_LIBS}
-	${ZMQ_LIB})
+	${ZMQ_LIB}
+	CamControl)
 
 ENDIF(WIN32)
+
+
 
 # add the install targets
 install (TARGETS VirtualVision DESTINATION bin)

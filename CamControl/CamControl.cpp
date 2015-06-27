@@ -20,7 +20,15 @@ void CamControl::hello()
 	cv::Mat gray;
 	//test for build and compile linkage to ZeroMQ
 	zmq::context_t context(1);
-	cout << "Hello World!" << endl;
+	cout << "Hello!" << endl;
+}
+void CamControl::world()
+{
+	//test for build and compile linkage to OpenCV
+	cv::Mat gray;
+	//test for build and compile linkage to ZeroMQ
+	zmq::context_t context(1);
+	cout << "World!" << endl;
 }
 
 bool CamControl::isCmaeraOn()

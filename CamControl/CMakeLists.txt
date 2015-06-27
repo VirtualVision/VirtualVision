@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.3)
 
-project (CamControll)
+project (CamControl)
+
+IF(WIN32)
 
 include_directories(${OPENCV_BUILD_DIR})
 include_directories(${OPENCV_INCLUDE_DIRS})
@@ -29,17 +31,34 @@ set(SOURCE
   CamControl.cpp
 )
 
-#ADD_EXECUTABLE(Test ${SOURCE} ${HEADERS})
-
 add_library(CamControl ${SOURCE} ${HEADERS})
-
 
 target_link_libraries (CamControl 
 	"${OpenCV_LIBS}" 
 	"${OpenCV_STATICLIBS}"
 	"${ZEROMQ_LIBS}")
 
+ELSE(WIN32)
 
+find_package(OpenCV REQUIRED)
+find_package(PkgConfig)
+pkg_check_modules(ZeroMQ libzmq)
+find_library(ZMQ_LIB zmq)
+
+set(HEADERS
+  CamControl.h
+)
+set(SOURCE
+  CamControl.cpp
+)
+
+add_library(CamControl ${SOURCE} ${HEADERS})
+
+target_link_libraries(CamControl
+	${OpenCV_LIBS}
+	${ZMQ_LIB})
+
+ENDIF(WIN32)
 
 install (TARGETS CamControl DESTINATION bin)
 install (FILES CamControl.h DESTINATION include)
