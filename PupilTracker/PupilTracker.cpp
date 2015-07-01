@@ -1,5 +1,6 @@
 #include "PupilTracker.h"
-
+#include <sstream>
+#include <unistd.h>
 using namespace std;
 
 PupilTracker::PupilTracker(int port)
@@ -19,10 +20,11 @@ int main(int argc, char** argv)
 	int x = 10;
 	int y = 11;
 	int frameId = 0;
-
-	int i = 4;
-	std::string text = "Player ";
-	text += std::to_string(i);
+	
+	ostringstream convert;
+	//int i = 4;
+	//std::string text = "Player ";
+	//text += std::to_string(i);
 
 	bool keepProcessing = true;
 	while (keepProcessing)
@@ -38,12 +40,16 @@ int main(int argc, char** argv)
 		std::cout << "sending "<< msg << std::endl;
 
 		msg = "x = ";
-		msg += std::to_string(x);
-		s_sendmore(publisher, msg);
+		convert.str("");
+		convert << x;
+		msg += convert.str();
+ 		s_sendmore(publisher, msg);
 		std::cout << "sending " << msg << std::endl;
 
 		msg = "y = ";
-		msg += std::to_string(y);
+		convert.str("");
+		convert << y;
+		msg += convert.str();
 		s_send(publisher, msg);
 		std::cout << "sending " << msg << std::endl;
 		
@@ -53,13 +59,15 @@ int main(int argc, char** argv)
 		std::cout << "sending " << msg << std::endl;
 
 		msg = "frameId = ";
-		msg += std::to_string(frameId);
+		convert.str("");
+		convert << frameId;
+		msg += convert.str();
 		s_send(publisher, msg);
 		std::cout << "sending " << msg << std::endl;
 
 		//send only 10 messages per second.
-		_sleep(100);
-		if (frameId == 500)
+		sleep(1);
+		if (frameId == 50)
 			keepProcessing = false;
 	}
 
