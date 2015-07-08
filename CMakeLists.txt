@@ -33,7 +33,7 @@ set(ZEROMQ_LIB_DIR "${ZEROMQ_ROOT}/lib")
 # add the binary tree to the search path for include files
 # so that we will find VirtualVisionConfig.h
 include_directories("${PROJECT_BINARY_DIR}")
-include_directories ("${PROJECT_SOURCE_DIR}/CamControl")
+include_directories ("${PROJECT_SOURCE_DIR}/GazeFinder")
 include_directories(${OPENCV_BUILD_DIR})
 include_directories(${OPENCV_INCLUDE_DIRS})
 include_directories("${ZEROMQ_BINARY_DIR}")
@@ -54,7 +54,10 @@ link_directories(
 	"${OPENCV_STATICLIB_DIRS}" 
 	"${ZEROMQ_LIB_DIR}")
 
-add_subdirectory (CamControl)
+add_subdirectory (GazeFinder)
+add_subdirectory (PupilTracker)
+add_subdirectory (GameEnv)
+add_subdirectory (UserDisplay)
 
 # add the executable
 add_executable(VirtualVision VirtualVision.cpp)
@@ -62,28 +65,25 @@ add_executable(VirtualVision VirtualVision.cpp)
 target_link_libraries (VirtualVision 
 	"${OpenCV_LIBS}" 
 	"${OpenCV_STATICLIBS}"
-	"${ZEROMQ_LIBS}"
-	CamControl)
+	"${ZEROMQ_LIBS}")
 
 ELSE(WIN32)
 
 include_directories("${PROJECT_BINARY_DIR}")
-include_directories ("${PROJECT_SOURCE_DIR}/CamControl")
+include_directories ("${PROJECT_SOURCE_DIR}/GazeFinder")
 
 find_package(OpenCV REQUIRED)
 find_package(PkgConfig)
 pkg_check_modules(ZeroMQ libzmq)
 find_library(ZMQ_LIB zmq)
 
-add_subdirectory (CamControl)
+add_subdirectory (GazeFinder)
 
 add_executable(VirtualVision VirtualVision.cpp)
 
 target_link_libraries(VirtualVision
 	${OpenCV_LIBS}
-	${ZMQ_LIB}
-	pthread
-	CamControl)
+	${ZMQ_LIB})
 
 ENDIF(WIN32)
 
