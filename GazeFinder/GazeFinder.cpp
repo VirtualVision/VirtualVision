@@ -15,7 +15,8 @@ int main(int argc, char** argv)
 	zmq::socket_t subscriber(context, ZMQ_SUB);
 
 	subscriber.setsockopt(ZMQ_SUBSCRIBE, "GazeData", 8);
-	subscriber.connect("tcp://localhost:5565");
+	//subscriber.connect("tcp:// (pi's ip address):5565");
+	subscriber.connect("tcp://169.254.0.10:5565");
 
 	while (1) {
 		
