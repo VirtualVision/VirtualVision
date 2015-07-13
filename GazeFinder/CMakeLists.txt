@@ -25,10 +25,22 @@ link_directories(
 	"${ZEROMQ_LIB_DIR}")
 
 set(HEADERS
-  GazeFinder.h
+  Calibrator.h
+  Mapper.h
+  PubSocket.h
+  SubSocket.h
+  SubSocket2.h
+  Logger.h
+
 )
 set(SOURCE
   GazeFinder.cpp
+  Calibrator.cpp
+  Mapper.cpp
+  PubSocket.cpp
+  SubSocket.cpp
+  SubSocket2.cpp
+  Logger.cpp
 )
 
 add_executable(GazeFinder ${SOURCE} ${HEADERS})
@@ -46,10 +58,22 @@ pkg_check_modules(ZeroMQ libzmq)
 find_library(ZMQ_LIB zmq)
 
 set(HEADERS
-  GazeFinder.h
+  Calibrator.h
+  Mapper.h
+  PubSocket.h
+  SubSocket.h
+  SubSocket2.h
+  Logger.h
+
 )
 set(SOURCE
   GazeFinder.cpp
+  Calibrator.cpp
+  Mapper.cpp
+  PubSocket.cpp
+  SubSocket.cpp
+  SubSocket2.cpp
+  Logger.cpp
 )
 
 add_executable(GazeFinder ${SOURCE} ${HEADERS})

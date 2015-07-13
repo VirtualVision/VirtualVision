@@ -1,4 +1,3 @@
-
 #include <string>
 #include <iostream>
 #include <stdio.h>
@@ -10,11 +9,12 @@
 #include "zhelpers.hpp"
 #include <time.h>
 
-class GazeFinder
-{
-private:
+void subscribe();
 
+class SubSocket2
+{
 public:
-	GazeFinder();
-	~GazeFinder(){};
+	SubSocket2();
+	~SubSocket2();
+	void subscribe();
 };

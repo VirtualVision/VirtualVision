@@ -55,6 +55,7 @@ link_directories(
 	"${ZEROMQ_LIB_DIR}")
 
 add_subdirectory (GazeFinder)
+add_subdirectory (PupilTracker)
 add_subdirectory (GameEnv)
 add_subdirectory (UserDisplay)
 
@@ -76,7 +77,7 @@ find_package(PkgConfig)
 pkg_check_modules(ZeroMQ libzmq)
 find_library(ZMQ_LIB zmq)
 
-add_subdirectory (PupilTracker)
+add_subdirectory (GazeFinder)
 
 add_executable(VirtualVision VirtualVision.cpp)
 

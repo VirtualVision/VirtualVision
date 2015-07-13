@@ -1,29 +1,30 @@
-
-#include "SubSocket.h"
-#include "SubSocket2.h"
-#include "Mapper.h"
-#include "Calibrator.h"
+#ifndef _PUBSOCKET_
+#define _PUBSOCKET_
 
 #include <string>
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include <time.h>
+
+
 #include <VirtualVisionConfig.h>
 //#include "opencv2/imgproc/imgproc.hpp"
 //#include "opencv2/highgui/highgui.hpp"
 #include <zmq.hpp>
 #include "zhelpers.hpp"
-#include <time.h>
+#include <windows.h>
 
-using namespace std;
-
-int main(int argc, char** argv)
+class PubSocket
 {
-	
-	SubSocket s;
-	Calibrator c;
+private:
+	int mPort;
+public:
+	PubSocket(int port);
+	~PubSocket();
+	void connect();
+	void publish(int x, int y);
+};
 
-	s.subscribe(c);
-
-	return 0;
-}
+#endif

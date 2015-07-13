@@ -1,8 +1,5 @@
-
-#include "SubSocket.h"
-#include "SubSocket2.h"
-#include "Mapper.h"
-#include "Calibrator.h"
+#ifndef _SUBSOCKET_
+#define _SUBSOCKET_
 
 #include <string>
 #include <iostream>
@@ -14,16 +11,16 @@
 #include <zmq.hpp>
 #include "zhelpers.hpp"
 #include <time.h>
+#include "Calibrator.h"
 
-using namespace std;
+//void subscribe();
 
-int main(int argc, char** argv)
+class SubSocket
 {
-	
-	SubSocket s;
-	Calibrator c;
+public:
+	SubSocket();
+	~SubSocket();
+	void subscribe(Calibrator c);
+};
 
-	s.subscribe(c);
-
-	return 0;
-}
+#endif
