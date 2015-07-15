@@ -98,7 +98,7 @@ void Calibrator::calibrate()
 		}
 
 		//calculates the matrix
-		int calibration_result = cal_calibration_homography(xtargets, ytargets, xpupil, ypupil);
+		cal_calibration_homography(xtargets, ytargets, xpupil, ypupil);
 
 		//connect our socket to the Oculus
 		
@@ -122,7 +122,7 @@ void Calibrator::calibrate()
 }
 
 
-int Calibrator::cal_calibration_homography(double xtargets[], double ytargets[], double xpupil[], double ypupil[])
+void Calibrator::cal_calibration_homography(double xtargets[], double ytargets[], double xpupil[], double ypupil[])
 {
 	int i, j;
 	stuDPoint cal_scene[9], cal_eye[9];

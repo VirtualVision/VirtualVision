@@ -1,5 +1,8 @@
 #include "PubSocket.h"
 #include "Logger.h"
+#include <string>
+
+using namespace std;
 
 //  Prepare our context and publisher
 zmq::context_t context(1);
@@ -11,7 +14,6 @@ Logger log1;
 PubSocket::PubSocket(int port)
 {
 	mPort = port;
-	
 
 }
 
@@ -27,7 +29,7 @@ void PubSocket::connect()
 }
 
 
-void PubSocket::publish(int x, int y)
+void PubSocket::publishPoints(int x, int y)
 {
 	std::string msg;
 	//send gaze data
@@ -53,5 +55,20 @@ void PubSocket::publish(int x, int y)
 	log1.log("sending: ");
 	log1.log(msg);
 	log1.log("\n\n");
+
+}
+
+void PubSocket::publishLog(string data)
+{
+	std::string msg;
+	msg = "DataLog";
+	s_sendmore(publisher, msg);
+	//std::cout << "sending " << msg << std::endl;
+
+
+	msg = "";
+	msg += data;
+	s_sendmore(publisher, msg);
+	//std::cout << "sending " << msg << std::endl;
 
 }

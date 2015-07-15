@@ -45,5 +45,5 @@ void Mapper::homography_map_point(double map_matrix[3][3], CvPoint p)
 	log4.log(to_string(p2.y));
 	log4.log("\n\n");
 
-	pub.publish(p2.x, p2.y);
+	pub.publishPoints(p2.x, p2.y);
 }

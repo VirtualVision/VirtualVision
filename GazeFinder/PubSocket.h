@@ -15,7 +15,7 @@
 #include <zmq.hpp>
 #include "zhelpers.hpp"
 #include <windows.h>
-
+using namespace std;
 class PubSocket
 {
 private:
@@ -24,7 +24,8 @@ public:
 	PubSocket(int port);
 	~PubSocket();
 	void connect();
-	void publish(int x, int y);
+	void publishPoints(int x, int y);
+	void publishLog(string data);
 };
 
 #endif
