@@ -12,16 +12,16 @@ TestSub::TestSub(int port)
 int main(int argc, char** argv)
 {
 	// OPENCV mat object
-	Mat imageOld;
-	imageOld = imread("C:\\Users\\Public\\Pictures\\Sample Pictures\\Koala.jpg");
+	//Mat imageOld;
+	//imageOld = imread("C:\\Users\\Public\\Pictures\\Sample Pictures\\Koala.jpg");
 	//uchar * image_uchar;	
 	zmq_msg_t msg;
 	
 	zmq::context_t context(1);
-	zmq::socket_t subscriber(context, ZMQ_SUB);
+	zmq::socket_t frameSub(context, ZMQ_SUB);
 
-	subscriber.setsockopt(ZMQ_SUBSCRIBE, "", 0);
-	subscriber.connect("tcp://localhost:5569");
+	frameSub.setsockopt(ZMQ_SUBSCRIBE, "", 0);
+	frameSub.connect("tcp://192.168.1.105:5556");
 
 	int counter = 0;
 	int rows = 0;
@@ -38,7 +38,7 @@ int main(int argc, char** argv)
 		try
 		{
 		rc = zmq_msg_init(&msg);		
-		rc = zmq_msg_recv(&msg, subscriber, 0);
+		rc = zmq_msg_recv(&msg, frameSub, 0);
 		
 		if (counter == 0)
 		{		
@@ -106,6 +106,9 @@ int main(int argc, char** argv)
 				}
 			}
 
+			imshow("We Got It!", img);
+			waitKey(1);
+
 			delete[] pRows;
 			pRows = nullptr;
 			delete[] pCols;
@@ -120,13 +123,10 @@ int main(int argc, char** argv)
 		catch (std::bad_alloc& ba)
 		{
 			std::cout << "bad_alloc caught: " << ba.what() << '\n';
-		}
+		}		
+
 		
+
 	}
-
-
-//	waitKey(0);
-	
-
 	return 0;
 }

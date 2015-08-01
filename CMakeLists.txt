@@ -44,10 +44,10 @@ if (WIN32)
 		"${ZEROMQ_LIB_DIR}")
 
 	add_subdirectory (GazeFinder)
-	add_subdirectory (PupilTracker)
+	#add_subdirectory (PupilTracker)
 	add_subdirectory (GameEnv)
-	#add_subdirectory (Display)
-	add_subdirectory (TestPub)
+	add_subdirectory (Display)
+	#add_subdirectory (TestPub)
 	add_subdirectory (TestSub)
 
 	# add the executable

@@ -6,7 +6,7 @@ using namespace std;
 zmq::context_t context(1);
 
 zmq::socket_t publisher(context, ZMQ_PUB);
-
+zmq::socket_t publisher2(context, ZMQ_PUB);
 PubSocket::PubSocket()
 {
 
@@ -20,6 +20,7 @@ PubSocket::~PubSocket()
 void PubSocket::connect()
 {
 	publisher.bind("tcp://*:5568");
+	publisher2.bind("tcp://*:5571");
 }
 
 /*
@@ -59,13 +60,13 @@ void PubSocket::publishLog(string data)
 	
 	string msg;
 	msg = "DataLog";
-	s_sendmore(publisher, msg);
+	s_sendmore(publisher2, msg);
 	cout << "sending LOG: " << msg << endl;
 
 
 	msg = "";
 	msg += data;
-	s_send(publisher, msg);
+	s_send(publisher2, msg);
 	cout << "sending LOG: " << msg << endl;
 	
 }
