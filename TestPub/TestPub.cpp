@@ -8,63 +8,83 @@ TestPub::TestPub(int port)
 {
 	mPort = port;
 }
-
 int main(int argc, char** argv)
 {
 	
 	//  Prepare our context and publisher
 	context_t context(1);
 	socket_t publisher(context, ZMQ_PUB);
-	publisher.bind("tcp://*:5567");
-
-
-
-	// OPENCV mat object
-	Mat image;
-	/// Load an image
-	image = imread("C:\\VirtualVision\\Images\\Penguins.jpg");
-	/// Show the image
-	imshow("TestPub Window", image);
-
-
-	//create message
-	zmq_msg_t msg;
-	int image_size = image.total() * image.elemSize();
-	uchar * image_uchar = new uchar[image_size];	
-	std::memcpy(image_uchar, image.data, image_size * sizeof(uchar));
-	int rc = zmq_msg_init_size(&msg, image_size * sizeof(uchar));
-	if (rc == 0)
+	publisher.bind("tcp://*:5569");
+	int *rows;
+	int *cols;
+	
+	while (1)
 	{
-		cout << "message init was sucessful!!!! " << endl;
-		////////////////////////////////////////////////////////////////////
-		memcpy(zmq_msg_data(&msg), image_uchar, image_size * sizeof(uchar));
+		string rString;
+		string cString;
 
-		cout << "converted size = " << image_size * sizeof(uchar) << endl;
-		rc = zmq_msg_send(&msg, publisher, 0);
-		if (rc == -1)
+		// OPENCV mat object
+		Mat image;
+		/// Load an image
+		image = imread("C:\\VirtualVision\\Images\\Penguins.jpg");
+
+		//create message
+		zmq_msg_t msg;
+
+		zmq_msg_t rmsg;
+		zmq_msg_t cmsg;
+
+		int rc;
+
+		try
 		{
-			cout << "message send was unsucessful!!!! " << endl;
+			rows = &image.rows;
+			cols = &image.cols;
+		}
+		catch (std::bad_alloc& ba)
+		{
+			std::cerr << "1bad_alloc caught: " << ba.what() << '\n';
+		}
+		
+		/// Show the image
+		//imshow("TestPub Window", image);
+
+		rc = zmq_msg_init_size(&rmsg, sizeof(*rows));
+		rc = zmq_msg_init_size(&cmsg, sizeof(*cols));
+		memcpy(zmq_msg_data(&rmsg), rows, sizeof(*rows));
+		memcpy(zmq_msg_data(&cmsg), cols, sizeof(*cols));
+
+		rc = zmq_msg_send(&rmsg, publisher, ZMQ_SNDMORE);
+		rc = zmq_msg_send(&cmsg, publisher, ZMQ_SNDMORE);
+
+		int image_size = image.total() * image.elemSize();
+		uchar * image_uchar;
+		try
+		{
+			image_uchar = new uchar[image_size];
+		}
+		catch (std::bad_alloc& ba)
+		{
+			std::cerr << "2bad_alloc caught: " << ba.what() << '\n';
+		}
+
+		memcpy(image_uchar, image.data, image_size * sizeof(uchar));
+		rc = zmq_msg_init_size(&msg, image_size * sizeof(uchar));
+		if (rc == 0)
+		{
+			memcpy(zmq_msg_data(&msg), image_uchar, image_size * sizeof(uchar));
+			rc = zmq_msg_send(&msg, publisher, 0);
 		}
 		else
 		{
-			cout << "message send was sucessful!!!! " << endl;
-			cout << "message size sent was " << rc << endl;
+			cout << "message init was unsucessful!!!! " << endl;
 		}
-	}
-	else
-	{
-		cout << "message init was unsucessful!!!! " << endl;		
-	}
-		
+		zmq_msg_close(&msg);
+		delete[] image_uchar;
+		image_uchar = nullptr;
 
-	/// Wait until user exit program by pressing a key
-	waitKey(0);
+	}
+
 
 	return 0;
 }
-
-
-//zmq_msg_t message;
-//zmq_msg_init_size(&message, strlen(string));
-//memcpy(zmq_msg_data(&message), string, strlen(string));
-//rc = zmq_send(socket, &message, 0);

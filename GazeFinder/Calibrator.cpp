@@ -15,25 +15,20 @@ using namespace std;
 double map_matrix[3][3];
 int counter = 0;
 
-double xtargets[SIZE] = { 300,600,900,300,600,900,300,600,900 };
-double ytargets[SIZE] = { 300,300,300,600,600,600,900,900,900 };
+double xtargets[SIZE] = { 0,590,1180,0,590,1180,0,590,1180 };
+double ytargets[SIZE] = { 0,0,0,282,282,282,564,564,564 };
 
 double xpupil[SIZE];
 double ypupil[SIZE];
 
-//double xpupil[SIZE] = { 200,400,600,200,400,600,200,400,600 };
-//double ypupil[SIZE] = { 200,200,200,400,400,400,600,600,600 };
-
 Mapper m;
-Logger log3;
+
 
 Calibrator::Calibrator()
 {
-	cout << "Hello world!" << endl;
 
-	
-
-	//int calibration_result = cal_calibration_homography(xtargets, ytargets, xpupil, ypupil);
+	m.dataLog = dataLog;
+	m.pub = pub;
 
 }
 
@@ -42,87 +37,91 @@ Calibrator::~Calibrator()
 
 }
 
+/*
+*  Add x value to the pupil point array.
+*/
 void Calibrator::setX(double x)
 {
+	//Add up to 9 points
 	if (counter < 9)
 	{
-		cout << counter << endl;
 		xpupil[counter] = x;
 		printf("Added x: %f\n", xpupil[counter]);
-		log3.log("Added x: ");
-		log3.log(to_string(xpupil[counter]));
-		log3.log("\n");
+		dataLog.log("Added x: " + to_string(xpupil[counter]) + "\n");
 	}
 	else
 	{
 		printf("Error: Tried to add too many pupil points");
-		log3.log("Error: Tried to add too many pupil points");
+		dataLog.log("Error: Tried to add too many pupil points");
 	
 	}
 	
 }
 
+/*
+*  Add y value to the pupil point array.
+*/
 void Calibrator::setY(double y)
 {
+	//Add up to 9 points
 	if (counter < 9)
 	{
 		ypupil[counter] = y;
 		printf("Added y: %f\n", ypupil[counter]);
-		log3.log("Added y: ");
-		log3.log(to_string(ypupil[counter]));
-		log3.log("\n");
+		dataLog.log("Added y: " + to_string(ypupil[counter]) + "\n");
 	    counter++;
 	}
 	else
 	{
 		printf("Error: Tried to add too many pupil points");
-		log3.log("Error: Tried to add too many pupil points");
+		dataLog.log("Error: Tried to add too many pupil points");
 	}
 	
 }
 
+/*
+*  Once all 9 points are received, calculate the matrix.
+*/
 void Calibrator::calibrate()
 {
 	if (counter >= 9)
 	{
 		printf("CPoints: \n");
+		dataLog.log("CPoints: \n");
 		for (int i = 0; i < SIZE; i++)
 		{
 			printf("%f, %f \n", xtargets[i],ytargets[i]);
+			dataLog.log(to_string(xtargets[i]) + ", " + to_string(ytargets[i]) + "\n");
 		}
 
 		printf("PPoints: \n");
+		dataLog.log("PPoints: \n");
 		for (int i = 0; i < SIZE; i++)
 		{
 			printf("%f, %f \n", xpupil[i], ypupil[i]);
+			dataLog.log(to_string(xpupil[i]) + ", " + to_string(ypupil[i]) + "\n");
 		}
 
 		//calculates the matrix
-		int calibration_result = cal_calibration_homography(xtargets, ytargets, xpupil, ypupil);
+		cal_calibration_homography(xtargets, ytargets, xpupil, ypupil);
 
-		//connect our socket to the Oculus
-		
-		m.connect();
-
-		/*
-		CvPoint testP;
-		testP.x = 200;
-		testP.y = 200;
-
-		printf("\n");
-		printf("example x: %f, ", (float)(homography_map_point(testP).x));
-		printf("example y: %f, \n", (float)(homography_map_point(testP).y));
-		*/
 	}
 	else
 	{
 		printf("Error: Tried to calibrate with too few pupil points");
+		dataLog.log("Error: Tried to calibrate with too few pupil points");
 	}
 	
 }
 
+void Calibrator::recalibrate()
+{
+	counter = 0;
 
-int Calibrator::cal_calibration_homography(double xtargets[], double ytargets[], double xpupil[], double ypupil[])
+}
+
+
+void Calibrator::cal_calibration_homography(double xtargets[], double ytargets[], double xpupil[], double ypupil[])
 {
 	int i, j;
 	stuDPoint cal_scene[9], cal_eye[9];
@@ -248,14 +247,14 @@ int Calibrator::cal_calibration_homography(double xtargets[], double ytargets[],
 	matrix_multiply33(T1, map_matrix, map_matrix);
 
 	printf("\nmap_matrix: \n");
-	log3.log("\nmap_matrix: \n");
+	dataLog.log("\nmap_matrix: \n");
 	for (j = 0; j < 3; j++) {
 		for (i = 0; i < 3; i++) {
 			printf("%8lf ", map_matrix[j][i]);
-			log3.log(to_string(map_matrix[j][i]));
+			dataLog.log(to_string(map_matrix[j][i]));
 		}
 		printf("\n");
-		log3.log("\n");
+		dataLog.log("\n");
 	}
 
 	for (i = 0; i < M; i++) {
@@ -271,7 +270,7 @@ int Calibrator::cal_calibration_homography(double xtargets[], double ytargets[],
 	free(eye_nor);
 	free(scene_nor);
 	printf("\nfinish calculate calibration\n");
-	log3.log("\nfinish calculate calibration\n\n");
+	dataLog.log("\nfinish calculate calibration\n\n");
 }
 
 Calibrator::stuDPoint* Calibrator::normalize_point_set(stuDPoint* point_set, double &dis_scale, stuDPoint &nor_center, int num)
@@ -624,13 +623,15 @@ void Calibrator::affine_matrix_inverse(double a[][3], double r[][3])
 	r[1][2] = -r[2][2] * (r[1][0] * a[0][2] + r[1][1] * a[1][2]);
 }
 
+/*
+* Send point to mapper.
+*/
+
 void Calibrator::homography_map_point(double x, double y)
 {
 	CvPoint p;
 	p.x = x;
 	p.y = y;
-
-	cout << "Sending " << x << ", " << y << " to be mapped." << endl;
 	
 	m.homography_map_point(map_matrix, p);
 }

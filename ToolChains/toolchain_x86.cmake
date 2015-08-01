@@ -1,0 +1,1 @@
+SET (ARCH_FLAG "x86")

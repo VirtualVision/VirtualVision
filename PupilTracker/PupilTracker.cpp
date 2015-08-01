@@ -1,6 +1,8 @@
+
 #include "PupilTracker.h"
 
-using namespace std;
+#define DEFAULT_BUFLEN 512
+#define DEFAULT_PORT "27005"
 
 PupilTracker::PupilTracker(int port)
 {
@@ -9,7 +11,8 @@ PupilTracker::PupilTracker(int port)
 
 int main(int argc, char** argv)
 {
-	//  Prepare our context and publisher
+
+	//Prepare our context and publisher
 	zmq::context_t context(1);
 
 	zmq::socket_t publisher(context, ZMQ_PUB);
@@ -46,20 +49,22 @@ int main(int argc, char** argv)
 		msg += std::to_string(y);
 		s_send(publisher, msg);
 		std::cout << "sending " << msg << std::endl;
+
+		
 		
 		//send frame data
-		msg = "FrameData";
-		s_sendmore(publisher, msg);
-		std::cout << "sending " << msg << std::endl;
+//		msg = "FrameData";
+	//	s_sendmore(publisher, msg);
+	//	std::cout << "sending " << msg << std::endl;
 
-		msg = "frameId = ";
-		msg += std::to_string(frameId);
-		s_send(publisher, msg);
-		std::cout << "sending " << msg << std::endl;
+	//	msg = "frameId = ";
+	//	msg += std::to_string(frameId);
+	//	s_send2(publisher, image.data);
+		//std::cout << "sending " << msg << std::endl;
 
 		//send only 10 messages per second.
 		_sleep(100);
-		if (frameId == 50)
+		if (frameId == 500)
 			keepProcessing = false;
 	}
 

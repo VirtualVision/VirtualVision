@@ -15,10 +15,14 @@
 #include <cstdio>
 #include <opencv/highgui.h>
 #include <string>
+#include "Logger.h"
+#include "PubSocket.h"
 
 class Calibrator
 {
 public:
+	Logger dataLog;
+	PubSocket pub;
 	Calibrator();
 	~Calibrator();
 	// CvPoint is 'integer', I need 'double'
@@ -30,7 +34,8 @@ public:
 	void setX(double x);
 	void setY(double y);
 	void calibrate();
-	int cal_calibration_homography(double xtargets[], double ytargets[], double xpupil[], double ypupil[]);
+	void recalibrate();
+	void cal_calibration_homography(double xtargets[], double ytargets[], double xpupil[], double ypupil[]);
 	stuDPoint* normalize_point_set(stuDPoint* point_set, double &dis_scale, stuDPoint &nor_center, int num);
 	void svd(int m, int n, double **a, double **p, double *d, double **q);
 	void matrix_multiply33(double a[][3], double b[][3], double r[][3]);
