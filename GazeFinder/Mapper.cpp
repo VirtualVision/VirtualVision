@@ -34,3 +34,13 @@ void Mapper::homography_map_point(double map_matrix[3][3], CvPoint p)
 	//Send the screen point to the Oculus
 	pub.publishPoints(p2.x, p2.y);
 }
+
+void Mapper::setLogger(Logger d)
+{
+	dataLog = d;
+}
+
+void Mapper::setPub(PubSocket p)
+{
+	pub = p;
+}

@@ -29,6 +29,8 @@ public:
 	Mapper();
 	~Mapper();
 	void connect();
+	void setLogger(Logger d);
+	void setPub(PubSocket p);
 	void homography_map_point(double map_matrix[3][3], CvPoint p);
 };
 

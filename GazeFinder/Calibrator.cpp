@@ -21,15 +21,13 @@ double ytargets[SIZE] = { 0,0,0,282,282,282,564,564,564 };
 double xpupil[SIZE];
 double ypupil[SIZE];
 
-Mapper m;
+
 
 
 Calibrator::Calibrator()
 {
 
-	m.dataLog = dataLog;
-	m.pub = pub;
-
+	
 }
 
 Calibrator::~Calibrator()
@@ -84,6 +82,9 @@ void Calibrator::setY(double y)
 */
 void Calibrator::calibrate()
 {
+	m.dataLog = dataLog;
+	m.pub = pub;
+
 	if (counter >= 9)
 	{
 		printf("CPoints: \n");
@@ -634,4 +635,16 @@ void Calibrator::homography_map_point(double x, double y)
 	p.y = y;
 	
 	m.homography_map_point(map_matrix, p);
+}
+
+void Calibrator::setLogger(Logger d)
+{
+	dataLog = d;
+	m.setLogger(dataLog);
+}
+
+void Calibrator::setPub(PubSocket p)
+{
+	pub = p;
+	m.setPub(pub);
 }

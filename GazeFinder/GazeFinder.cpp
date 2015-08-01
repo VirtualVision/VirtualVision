@@ -33,9 +33,12 @@ void runMapper(Calibrator c);
 
 int main(int argc, char** argv)
 {
+	dataLog.makeFile();
+
 	p.connect();				//connect our publisher
-	c.dataLog = dataLog;		//set the log
-	c.pub = p;					//set the publisher
+
+	c.setLogger(dataLog);		//set the log
+	c.setPub(p);			//set the publisher
 
 	int counter = 0;			//count how many calibration points received
 

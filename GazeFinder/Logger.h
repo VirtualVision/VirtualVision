@@ -12,10 +12,12 @@ class Logger
 {
 public:
 	PubSocket pub;
+	string filename;
 	Logger();
 	~Logger();
-	
+	bool exists;
 	void log(string data);
+	void makeFile();
 };
 
 #endif

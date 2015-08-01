@@ -17,12 +17,13 @@
 #include <string>
 #include "Logger.h"
 #include "PubSocket.h"
-
+#include "Mapper.h"
 class Calibrator
 {
 public:
 	Logger dataLog;
 	PubSocket pub;
+	Mapper m;
 	Calibrator();
 	~Calibrator();
 	// CvPoint is 'integer', I need 'double'
@@ -35,6 +36,8 @@ public:
 	void setY(double y);
 	void calibrate();
 	void recalibrate();
+	void setLogger(Logger d);
+	void setPub(PubSocket p);
 	void cal_calibration_homography(double xtargets[], double ytargets[], double xpupil[], double ypupil[]);
 	stuDPoint* normalize_point_set(stuDPoint* point_set, double &dis_scale, stuDPoint &nor_center, int num);
 	void svd(int m, int n, double **a, double **p, double *d, double **q);
