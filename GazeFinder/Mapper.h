@@ -15,11 +15,17 @@
 #include <cstdio>
 #include <opencv/highgui.h>
 #include "PubSocket.h"
+#include "Logger.h"
+
 #define SIZE 9
+
+using namespace std;
 
 class Mapper
 {
 public:
+	Logger dataLog;
+	PubSocket pub;
 	Mapper();
 	~Mapper();
 	void connect();

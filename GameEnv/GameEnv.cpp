@@ -1,5 +1,5 @@
-#include "GameEnv.h"
 
+#include "GameEnv.h"
 
 using namespace std;
 
@@ -10,6 +10,7 @@ GameEnv::GameEnv(int port)
 
 int main(int argc, char** argv)
 {
+
 	//  Prepare our context and publisher
 	zmq::context_t context(1);
 
@@ -40,10 +41,17 @@ int main(int argc, char** argv)
 
 		//send only 10 messages per second.
 		_sleep(100);
+
 		if (frameId == 10)
+		{
+		//	frameId = 1;
+		//	_sleep(5000);
 			keepProcessing = false;
+		}
+			
 	}
 
+	
 	zmq::socket_t subscriber(context, ZMQ_SUB);
 	subscriber.setsockopt(ZMQ_SUBSCRIBE, "ScreenPoints", 12);
 	subscriber.connect("tcp://localhost:5568");
@@ -58,6 +66,6 @@ int main(int argc, char** argv)
 		std::cout << "got " << msg3 << std::endl;
 
 	}
-
+	
 	return 0;
 }

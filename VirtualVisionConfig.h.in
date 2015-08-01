@@ -1,3 +1,0 @@
-// the configured options and settings for VirtualVision
-#define VirtualVision_VERSION_MAJOR @VirtualVision_VERSION_MAJOR@
-#define VirtualVision_VERSION_MINOR @VirtualVision_VERSION_MINOR@
