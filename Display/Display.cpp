@@ -13,45 +13,62 @@ socket_t logSub(context, ZMQ_SUB);
 Display::Display(QWidget *parent) :QMainWindow(parent)
 {
 	ui.setupUi(this);
-
+	
 	ui.graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	ui.graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	scene = new QGraphicsScene(this);
-	q = QImage("C:\\VirtualVision\\Images\\orange.jpg");
+	q = QImage("C:\\VirtualVision\\Images\\Blank.jpg");
 	scene->addPixmap(QPixmap::fromImage(q));
 	ui.graphicsView->setScene(scene);
 	ui.graphicsView->fitInView(scene->itemsBoundingRect(), Qt::KeepAspectRatio);
 	
-	//connect to pupil tracker for eye image
-	frameSub.setsockopt(ZMQ_SUBSCRIBE, "", 0);
-	logSub.setsockopt(ZMQ_SUBSCRIBE, "DataLog", 7);
-	frameSub.connect("tcp://192.168.1.105:5556");
-	logSub.connect("tcp://localhost:5571");
-
-	counter = 0;
-	rows = 0;
-	cols = 0;
-
-	// create a timer
-	timer = new QTimer(this);
-	timer2 = new QTimer(this);
-
-	// setup signal and slot
-	connect(timer, SIGNAL(timeout()),
-		this, SLOT(MyTimerSlot()));
-
-	// setup signal and slot
-	connect(timer2, SIGNAL(timeout()),
-		this, SLOT(MyTimerSlot2()));
-
-	// msec
-	timer->start(1);
-	timer2->start(100);
+	connect(ui.trackerButton, SIGNAL(released()), this, SLOT(subscribeTracker()));
+	connect(ui.logButton, SIGNAL(released()), this, SLOT(subscribeLog()));
 }
 
 Display::~Display()
 {
 	//delete ui;
+}
+
+void Display::subscribeTracker()
+{
+	ui.trackerButton->setEnabled(false);
+
+	//connect to pupil tracker for eye image
+	frameSub.setsockopt(ZMQ_SUBSCRIBE, "", 0);
+	frameSub.connect("tcp://192.168.1.105:5556");
+	
+	counter = 0;
+	rows = 0;
+	cols = 0;
+
+	// create a timer
+	imageTimer = new QTimer(this);
+
+	// setup signal and slot
+	connect(imageTimer, SIGNAL(timeout()),
+	this, SLOT(MyTimerSlot()));
+
+	// msec
+	imageTimer->start(1);
+
+}
+
+void Display::subscribeLog()
+{
+	ui.logButton->setEnabled(false);
+
+	logSub.setsockopt(ZMQ_SUBSCRIBE, "DataLog", 7);
+	logSub.connect("tcp://localhost:5571");
+
+	logTimer = new QTimer(this);
+
+	// setup signal and slot
+	connect(logTimer, SIGNAL(timeout()),
+	this, SLOT(MyTimerSlot2()));
+
+	logTimer->start(100);
 }
 
 
@@ -159,9 +176,10 @@ void Display::MyTimerSlot()
 			delete scene;
 			scene = new QGraphicsScene(this);
 			scene->addPixmap(QPixmap::fromImage(q.rgbSwapped()));
-
+			ui.graphicsView->setFixedHeight(img.rows);
+			ui.graphicsView->setFixedWidth(img.cols);											
 			ui.graphicsView->setScene(scene);
-			ui.graphicsView->fitInView(scene->itemsBoundingRect(), Qt::KeepAspectRatio);
+			ui.graphicsView->fitInView(scene->itemsBoundingRect(), Qt::IgnoreAspectRatio);
 
 		}
 	}

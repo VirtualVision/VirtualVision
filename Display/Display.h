@@ -33,6 +33,8 @@ public:
 	zmq_msg_t msg;
 
 public slots:
+	void subscribeTracker();
+	void subscribeLog();
 	void MyTimerSlot();
 	void MyTimerSlot2();
 	
@@ -48,8 +50,8 @@ private:
 	//  const uchar *qImageBuffer;
 	QGraphicsScene *scene;
 	QPixmap image;
-	QTimer *timer;
-	QTimer *timer2;
+	QTimer *imageTimer;
+	QTimer *logTimer;
 	QImage  q;
 	QGraphicsPixmapItem* pixmapItem;
 
