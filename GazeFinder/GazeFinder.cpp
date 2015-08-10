@@ -69,14 +69,14 @@ int main(int argc, char** argv)
 void connect()
 {
 
-	subscriber3.setsockopt(ZMQ_SUBSCRIBE, "GazeData", 8);
+	subscriber3.setsockopt(ZMQ_SUBSCRIBE, "PupilData", 9);
 	subscriber4.setsockopt(ZMQ_SUBSCRIBE, "Calibrate", 9);
-	subscriber5.setsockopt(ZMQ_SUBSCRIBE, "GazeData", 8);
+	subscriber5.setsockopt(ZMQ_SUBSCRIBE, "PupilData", 9);
 
-        subscriber3.connect("tcp://192.168.1.105:5557");
-        //subscriber.connect("tcp://192.168.1.105:5565");
-        subscriber4.connect("tcp://localhost:5567");
-        subscriber5.connect("tcp://192.168.1.105:5557");
+	subscriber3.connect("tcp://192.168.1.105:5557");
+    //subscriber.connect("tcp://192.168.1.105:5565");
+    subscriber4.connect("tcp://localhost:5567");
+    subscriber5.connect("tcp://192.168.1.105:5557");
 }
 
 

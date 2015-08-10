@@ -24,7 +24,7 @@ void Logger::makeFile()
 	{
 		if (std::ifstream(fname + ".txt"))
 		{
-			std::cout << "File already exists" << std::endl;
+			//std::cout << "File already exists" << std::endl;
 			fname = fnameOG + to_string(nextFile);
 
 			nextFile++;
