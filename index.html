@@ -34,18 +34,26 @@
         <h2>
 <a id="project-objective" class="anchor" href="#project-objective" aria-hidden="true"><span class="octicon octicon-link"></span></a>Project Objective</h2>
 
-<p>The goal of our project was to add an eye tracking module to the Oculus Rift. We mounted a camera inside the  Oculus Rift and used a Raspberry Pi 2 to track the eye location and communicate with a PC. We created a game in Unity to simulate the calibration process and show how to use the eye tracking data. </p>
+<p>The goal of our project was to add an eye tracking module to the Oculus Rift. To meet this goal we needed to...
+*Attach and use a camera inside a VR headset.
+*Do image processing and apply eye tracking software to determine the gaze of the eye.
+*Create an example application of the data.
+*Establish communication between all components.</p>
+
+<p>We mounted a camera inside the  Oculus Rift and used a Raspberry Pi 2 to track the eye location and communicate with a PC using an Ethernet connection. We created a game in Unity to simulate the calibration process and show how to use the eye tracking data within an application. </p>
 
 <h2>
 <a id="hardware" class="anchor" href="#hardware" aria-hidden="true"><span class="octicon octicon-link"></span></a>Hardware</h2>
 
-<p>We fabricated custom Oculus lens risers with a slot to insert the camera between the Oculus lens and the screen. The camera used was a Raspberry Pi Spy Camera with an added IR filter to get a better picture of the eye. We also used IR LED's to## get proper lighting. Picture of setup.</p>
+<p>We fabricated custom Oculus Rift lens risers with a slot to insert the camera between the Oculus lens and the screen. The camera used was a Raspberry Pi Spy Camera with an added IR filter to get a better picture of the eye. We also mounted IR LED's on the Oculus Rift to get proper lighting. Picture of setup.</p>
 
 <h2>
 <a id="software" class="anchor" href="#software" aria-hidden="true"><span class="octicon octicon-link"></span></a>Software</h2>
 
-<h3>
-<a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating pages manually</h3>
+<p>For pupil tracking we used the <a href="https://www.cl.cam.ac.uk/research/rainbow/projects/pupiltracking/">Swirski robust pupil tracker.</a> This is run on the Raspberry Pi and the data is sent through a socket using <a href="http://zeromq.org/">ZeroMQ</a>. The PC application uses this data when running a calibration routine and for determining the users gaze. The Unity game has in game targets for the user to look at during the calibration routine, and creates a graphical representation where the user is looking. Example pictures.</p>
+
+<h2>
+<a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating pages manually</h2>
 
 <p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
 
